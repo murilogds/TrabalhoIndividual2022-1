@@ -12,6 +12,20 @@ services:
       POSTGRES_DB: '${POSTGRES_DB}'
       POSTGRES_USER: '${POSTGRES_USER}'
       POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    network_mode: host
+
+  app:
+    container_name: library_backend
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+    build: .
+    network_mode: host
+    ports:
+      - 8000:8000
     
 volumes:
   storage_db:
