@@ -8,10 +8,8 @@ services:
       - storage_db:/var/lib/postgresql/data
     ports:
       - 5432:5432
-    environment:
-      POSTGRES_DB: '${POSTGRES_DB}'
-      POSTGRES_USER: '${POSTGRES_USER}'
-      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    env_file:
+      - library_back/.env
     network_mode: host
 
   app:
@@ -22,10 +20,20 @@ services:
              python manage.py runserver 0.0.0.0:8000"
     depends_on:
       - db
-    build: .
+    build: library_back/
     network_mode: host
     ports:
       - 8000:8000
+
+  front:
+    container_name: library_front
+    command: npm start
+    depends_on:
+      - app
+    build: library_front/
+    network_mode: host
+    ports:
+      - 3000:3000
     
 volumes:
   storage_db:
