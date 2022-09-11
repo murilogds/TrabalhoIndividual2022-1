@@ -2,7 +2,9 @@ name: Test and Lint Backend
 
 on:
   push:
-    branches: [ "main", "continuous_integration" ]
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   test:
